@@ -10,6 +10,8 @@
  * @FilePath: \WebStack\search.php
  * @Description: 
  */
+
+//  TAG: 疑似单卡片定义，evidence: xe-card
 if ( ! defined( 'ABSPATH' ) ) { exit; }
 get_header();
 ?>
@@ -43,7 +45,9 @@ get_header();
 			?>
 				<div class="xe-card col-sm-4 col-md-3 <?php echo get_post_meta($post->ID, '_wechat_qr', true)? 'wechat':''?>">
             	  	
-				<?php include( 'templates/site-card.php' ); ?>
+				<?php include( 'templates/site-card.php' ); 
+				// card
+				?>
             	</div>
     		<?php endif; endwhile; endif;?>
 			</div>

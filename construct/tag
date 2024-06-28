@@ -1,0 +1,1 @@
+xcopy /y /c /h /r /s "T:\DevRepos\WebStack\construct\*.*" "T:\phpEnv\xampp\htdocs\wpdev\wp-content\themes\construct"

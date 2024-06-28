@@ -1,0 +1,5 @@
+.img-circle{
+    object-fit: cover;
+    height: 40px;
+    object-position: center;
+}

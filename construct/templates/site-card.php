@@ -10,6 +10,8 @@
  * @FilePath: \WebStack\templates\site-card.php
  * @Description: 
  */
+
+ // SITE CARD
 if ( ! defined( 'ABSPATH' ) ) { exit; }  ?>
 
             <?php
@@ -63,6 +65,7 @@ if ( ! defined( 'ABSPATH' ) ) { exit; }  ?>
             <a href="<?php echo $url ?>" target="<?php echo $blank ?>" class="xe-widget xe-conversations box2 label-info" <?php echo $tooltip . ' ' . $is_html ?> title="<?php echo $title ?>">
                 <div class="xe-comment-entry">
                     <div class="xe-user-img">
+                        <!-- 卡片具体定义 默认行为 -->
                         <?php if(io_get_option('lazyload')): ?>
                         <img class="img-circle lazy" src="<?php echo $default_ico; ?>" data-src="<?php echo get_post_meta($post->ID, '_thumbnail', true)? get_post_meta($post->ID, '_thumbnail', true): (io_get_option('ico_url') .format_url($link_url) . io_get_option('ico_png')) ?>" onerror="javascript:this.src='<?php echo $default_ico; ?>'" width="40">
                         <?php else: ?>

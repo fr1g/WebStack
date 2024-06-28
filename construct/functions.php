@@ -1,4 +1,5 @@
 <?php
+include('api/api.php');
 if ( ! defined( 'ABSPATH' ) ) { exit; }
 date_default_timezone_set('Asia/Shanghai');
 require get_template_directory() . '/inc/inc.php';

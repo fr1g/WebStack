@@ -28,7 +28,7 @@ else{?>
 ?>
 
 <div class="sites-list" style="margin-bottom: 8.5rem;">
-<?php if(!wp_is_mobile() && io_get_option('ad_home_s')) echo '<div class="row"><div class="ad ad-home col-md-6">' . stripslashes( io_get_option('ad_home') ) . '</div><div class="ad ad-home col-md-6 visible-md-block visible-lg-block">' . stripslashes( io_get_option('ad_home') ) . '</div></div>'; ?>        
+<?php if(!wp_is_mobile() && io_get_option('ad_home_s')) echo '<div class="row"><div class="ad ad-home col-md-12">' . stripslashes( io_get_option('ad_home') ) . '</div><div class="ad ad-home col-md-12 visible-md-block visible-lg-block">' . stripslashes( io_get_option('ad_home') ) . '</div></div>'; ?>        
 
 <?php
 foreach($categories as $category) {
