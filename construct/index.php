@@ -1,7 +1,6 @@
 <?php if ( ! defined( 'ABSPATH' ) ) { exit; }?>
 <?php get_header();?>
 
-
 <?php 
 $categories= get_categories(array(
   'taxonomy'     => 'favorites',

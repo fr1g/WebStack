@@ -1,4 +1,5 @@
 <?php
+$_ENV['exaccips'] = [];
 include('api/api.php');
 if ( ! defined( 'ABSPATH' ) ) { exit; }
 date_default_timezone_set('Asia/Shanghai');
