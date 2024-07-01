@@ -6,6 +6,10 @@ $tmp = $redis -> get('ips');
 $extra_accessedIPs = isset($tmp) ? json_decode($tmp, true) : [];
 $redis -> close();
 
+$MAX_TRY = 2;
+$COOL_DOWN = 300; // seconds
+// to debug it in small time span, modify it to 30.
+
 function submitSync(){
     $GLOBALS["redis"] -> connect('localhost', 6379);
     $GLOBALS["redis"] -> set('ips', json_encode($GLOBALS["extra_accessedIPs"]));
@@ -15,8 +19,8 @@ function submitSync(){
 
 function pushIpAccessedStatus($ipaddr){
     $now = time();
-    $maxTries = 2;
-    $interval = 300;
+    $maxTries = $GLOBALS['MAX_TRY'];
+    $interval = $GLOBALS['COOL_DOWN']; 
     if(!isset($GLOBALS['extra_accessedIPs'][$ipaddr])){
         $GLOBALS['extra_accessedIPs'][$ipaddr] = [
             "ip" => $ipaddr,
@@ -62,16 +66,23 @@ add_action('rest_api_init', function() {
 
 add_action('rest_api_init', function() {
     register_rest_route('apis', 'submit', [
-        'methods' => 'GET',
+        'methods' => 'POST',
         'callback' => function ($request){
             $thisIP = $_SERVER['REMOTE_ADDR'];
             $isSuccessed = pushIpAccessedStatus($thisIP) == 0;
             $inst = ($GLOBALS["extra_accessedIPs"][$thisIP] ?? false);
+            if(!$isSuccessed) return [
+                'status' => false,
+                'instance' => ($inst ? $inst : 'unset_yet'),
+            ];
+
+            $respBody = file_get_contents('php://input');
             // 
             
             return [
                 'status' => $isSuccessed,
                 'instance' => ($inst ? $inst : 'unset_yet'),
+                'receivedForm' => $respBody
             ];
         }
     ]);
