@@ -1,4 +1,5 @@
 <?php
+global $wpdb;
 $redis = new Redis();
 $redis -> connect('localhost', 6379);
 $tmp = $redis -> get('ips');
@@ -47,9 +48,13 @@ add_action('rest_api_init', function() {
     register_rest_route('apis', 'get-classes', [
         'methods' => 'GET',
         'callback' => function (){
-            // return "xxxxx";
+            $filtered = '';
+            $ress = $GLOBALS['wpdb'] -> get_results("select slug from wp_terms where slug like '%-type' and 1=1", 'ARRAY_A');
+            foreach ($ress as $k => $item) {
+                $filtered = $filtered . '###' . $item['slug'];
+            }
             return [
-                'groups' => ''
+                'groups' => $filtered,
             ];
         }
     ]);
