@@ -20,6 +20,7 @@ if( ! function_exists( 'cs_admin_enqueue_scripts' ) ) {
     // framework core styles
     wp_enqueue_style( 'cs-framework', CS_URI .'/assets/css/cs-framework.css', array(), '1.0.0', 'all' );
     wp_enqueue_style( 'font-awesome', CS_URI .'/assets/css/font-awesome.css', array(), '4.7.0', 'all' );
+    wp_enqueue_style( 'frigPatchs', CS_URI .'/assets/css/patch.css', array(), 'uni', 'all' );
 
     if ( CS_ACTIVE_LIGHT_THEME ) {
       wp_enqueue_style( 'cs-framework-theme', CS_URI .'/assets/css/cs-framework-light.css', array(), "1.0.0", 'all' );

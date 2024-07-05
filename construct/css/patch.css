@@ -1,5 +1,14 @@
 .img-circle{
-    object-fit: cover;
-    height: 40px;
-    object-position: center;
+    object-fit: cover !important;
+    height: 40px !important;
+    object-position: center !important;
+}
+
+.collapse.in.fix{
+    display: grid !important
+}
+
+.panel-heading.fix, .panel-body.fix{
+    border: transparent !important;
+    border-top-color: transparent !important;
 }

@@ -1,3 +1,33 @@
+// PATCH PART OF FRIG
+console.log('LOADING: Frig Patch for WebStack X modify');
+
+var 
+	_consoleErr = console.error, 
+	_consoleWarn = console.warn, 
+	isTwLoaded = false;
+
+console.warn = function(...data){
+	_consoleWarn(...data);
+	if(data.toString().includes('cdn.tailwindcss.com')) isTwLoaded = true;
+}
+console.error = function(...data){
+	if(data.toString().includes('Syntax error, unrecognized expression: #collapse')){
+		console.groupCollapsed('got a minor error, expand to see if needed.');
+		console.log(...data);
+		console.groupEnd();
+		return;
+	}
+	_consoleErr(...data);
+}
+const _ua = navigator.userAgent;
+
+
+console.log('LOAD: Frig Patch!');
+// END OF PATCH
+
+
+
+
 /*! perfect-scrollbar - v1.1
  * https://github.com/owen0o0/WebStack
  * https://www.iotheme.cn/store/webstack.html

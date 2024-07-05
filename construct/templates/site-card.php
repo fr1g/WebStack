@@ -12,9 +12,10 @@
  */
 
  // SITE CARD
-if ( ! defined( 'ABSPATH' ) ) { exit; }  ?>
+if ( ! defined( 'ABSPATH' ) ) { exit; }  
+?>
 
-            <?php
+        <?php
             $title = $link_url;
             $is_html = '';
             $tooltip = 'data-toggle="tooltip" data-placement="bottom"';
@@ -74,7 +75,15 @@ if ( ! defined( 'ABSPATH' ) ) { exit; }  ?>
                     </div>
                     <div class="xe-comment">
                         <div class="xe-user-name overflowClip_1">
-                            <strong><?php the_title() ?></strong>
+                            <strong>
+                                <?php 
+                                    $_tmptitl = $post->post_title;
+                                    $tmp = strstr($_tmptitl, '@@');
+                                    if($tmp) $_tmptitl = str_replace('@@', '', $_tmptitl);
+                                    
+                                    // $theName = ;
+                                    echo $_tmptitl ;?>
+                            </strong>
                         </div>
                         <p class="overflowClip_1"><?php echo get_post_meta($post->ID, '_sites_sescribe', true) ?: preg_replace("/(\s|\&nbsp\;|　|\xc2\xa0)/","",get_the_excerpt($post->ID)); ?></p>
                     </div>

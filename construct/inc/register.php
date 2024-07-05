@@ -19,6 +19,8 @@ function theme_load_scripts() {
 	wp_register_style( 'nav',               THEME_URL.'/css/nav.css', array(), $theme_version );
 
 	wp_register_script( 'bootstrap',        THEME_URL.'/js/bootstrap.min.js', array('jquery'), $theme_version, true );
+	wp_enqueue_style( 'frigPatchs',         THEME_URL.'/css/patch.css', array(), 'uni', 'all' );
+
 	wp_register_script( 'TweenMax',         THEME_URL.'/js/TweenMax.min.js', array('jquery'), $theme_version, true );
 	wp_register_script( 'appjs',            THEME_URL.'/js/app.js', array('jquery'), $theme_version, true );
 	wp_register_script( 'lazyload',         THEME_URL.'/js/lazyload.min.js', array('jquery'), $theme_version, true );

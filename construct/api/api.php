@@ -4,6 +4,21 @@ $redis = new Redis();
 $redis -> connect('localhost', 6379);
 $tmp = $redis -> get('ips');
 $extra_accessedIPs = isset($tmp) ? json_decode($tmp, true) : [];
+$tmp = null;
+$tmp = $redis -> get('isDbSet');
+$dbCreated = $tmp ?? isset($tmp);
+try {
+    if(!$dbCreated){
+        // if in redis, no record that the database table already created
+
+        // if in mysql exists the table
+
+        // else, create the table
+    }
+} catch (\Throwable $th) {
+    //throw $th;
+}
+
 $redis -> close();
 
 $MAX_TRY = 2;
@@ -59,6 +74,7 @@ add_action('rest_api_init', function() {
             }
             return [
                 'groups' => $filtered,
+                'dbc' => $GLOBALS['dbCreated']
             ];
         }
     ]);
@@ -78,6 +94,8 @@ add_action('rest_api_init', function() {
 
             $respBody = file_get_contents('php://input');
             // 
+            $fill = json_decode($respBody);
+            
             
             return [
                 'status' => $isSuccessed,
@@ -87,5 +105,6 @@ add_action('rest_api_init', function() {
         }
     ]);
 });
+
 
 ?>
