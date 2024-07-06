@@ -62,31 +62,40 @@ if ( ! defined( 'ABSPATH' ) ) { exit; }
                 }
             } 
 
+            $__this_info = get_post_meta($post->ID, '_sites_sescribe', true) ?: str_replace('<br>', '', trim(preg_replace("/(\&nbsp\;|　|\xc2\xa0)/", "", get_the_excerpt($post->ID))))
+            
             ?>
-            <a href="<?php echo $url ?>" target="<?php echo $blank ?>" class="xe-widget xe-conversations box2 label-info" <?php echo $tooltip . ' ' . $is_html ?> title="<?php echo $title ?>">
-                <div class="xe-comment-entry">
-                    <div class="xe-user-img">
-                        <!-- 卡片具体定义 默认行为 -->
-                        <?php if(io_get_option('lazyload')): ?>
-                        <img class="img-circle lazy" src="<?php echo $default_ico; ?>" data-src="<?php echo get_post_meta($post->ID, '_thumbnail', true)? get_post_meta($post->ID, '_thumbnail', true): (io_get_option('ico_url') .format_url($link_url) . io_get_option('ico_png')) ?>" onerror="javascript:this.src='<?php echo $default_ico; ?>'" width="40">
-                        <?php else: ?>
-                        <img class="img-circle lazy" src="<?php echo get_post_meta($post->ID, '_thumbnail', true)? get_post_meta($post->ID, '_thumbnail', true): (io_get_option('ico_url') .format_url($link_url) . io_get_option('ico_png')) ?>" onerror="javascript:this.src='<?php echo $default_ico; ?>'" width="40">
-                        <?php endif ?>
-                    </div>
-                    <div class="xe-comment">
-                        <div class="xe-user-name overflowClip_1">
-                            <strong>
-                                <?php 
-                                    $_tmptitl = $post->post_title;
-                                    $tmp = strstr($_tmptitl, '@@');
-                                    if($tmp) $_tmptitl = str_replace('@@', '', $_tmptitl);
-                                    
-                                    // $theName = ;
-                                    echo $_tmptitl ;?>
-                            </strong>
+            <div class="z-card-container">
+                <a href="<?php echo $url ?>" target="<?php echo $blank ?>" class="xe-widget xe-conversations box2 label-info"  title="<?php echo $title ?>">
+                    <div class="xe-comment-entry">
+                        <div class="xe-user-img">
+                            <!-- 卡片具体定义 默认行为 -->
+                            <?php if(io_get_option('lazyload')): ?>
+                            <img class="img-circle lazy" src="<?php echo $default_ico; ?>" data-src="<?php echo get_post_meta($post->ID, '_thumbnail', true)? get_post_meta($post->ID, '_thumbnail', true): (io_get_option('ico_url') .format_url($link_url) . io_get_option('ico_png')) ?>" onerror="javascript:this.src='<?php echo $default_ico; ?>'" width="40">
+                            <?php else: ?>
+                            <img class="img-circle lazy" src="<?php echo get_post_meta($post->ID, '_thumbnail', true)? get_post_meta($post->ID, '_thumbnail', true): (io_get_option('ico_url') .format_url($link_url) . io_get_option('ico_png')) ?>" onerror="javascript:this.src='<?php echo $default_ico; ?>'" width="40">
+                            <?php endif ?>
                         </div>
-                        <p class="overflowClip_1"><?php echo get_post_meta($post->ID, '_sites_sescribe', true) ?: preg_replace("/(\s|\&nbsp\;|　|\xc2\xa0)/","",get_the_excerpt($post->ID)); ?></p>
+                        <div class="xe-comment">
+                            <div class="xe-user-name overflowClip_1">
+                                <strong>
+                                    <?php 
+                                        $_tmptitl = $post->post_title;
+                                        $tmp = strstr($_tmptitl, '@@');
+                                        if($tmp) $_tmptitl = str_replace('@@', '', $_tmptitl);
+                                        
+                                        // $theName = ;
+                                        echo $_tmptitl ;?>
+                                </strong>
+                            </div>
+                            <p class="overflowClip_1"><?php echo $__this_info; ?></p>
+                        </div>
                     </div>
+                </a>
+                <div class="z-card-tooltip" <?php echo ($__this_info == '' ? ('style="display: none !important"') : '')?>>
+                    <p <?php if(strlen($__this_info) >= 20) echo 'style="text-indent: 4ch"'; ?>>
+                        <?php echo str_replace('\n', '<br/>', $__this_info);?>&nbsp;
+                    </p>
                 </div>
-            </a>
+            </div>
             

@@ -22,11 +22,6 @@ if ($police_icp = io_get_option('police_icp')) {
 }
 ?>
             <footer class="main-footer sticky footer-type-1">
-                <div class="go-up">
-                    <a href="#" rel="go-top">
-                        <i class="fa fa-angle-up"></i>
-                    </a>
-                </div>
                 <div class="footer-inner">
                     <!---请保留版权说明，谢谢---->
                     <div class="footer-text">

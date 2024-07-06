@@ -13,7 +13,7 @@
 if ( ! defined( 'ABSPATH' ) ) { exit; } ?>
 <?php if( io_get_option('bulletin')) : ?>
 <div id="bulletin_box" class="panel">
-    <div class="d-flex text-muted">
+    <div class="d-flex text-muted" style="padding-left: 5px; padding-right: 5px;">
 		<div><i class="fa fa-volume-up" style="line-height:25px"></i></div>
         <div class="bulletin mx-1 mx-md-2">
             <ul class="bulletin-ul">

@@ -12,10 +12,10 @@ $categories= get_categories(array(
 ); 
 include( 'templates/header-nav.php' );
 ?>
-<div class="main-content">
 
 <?php include( 'templates/header-banner.php' ); ?>
- 
+<div class="main-content">
+
 <?php get_template_part( 'templates/bulletin' ); ?>
 
 <?php
@@ -58,6 +58,11 @@ foreach($categories as $category) {
 } 
 get_template_part( 'templates/friendlink' ); 
 ?>
+</div>
+<div class="go-up">
+    <a href="#" rel="go-top">
+        <i class="fa fa-angle-up"></i>
+    </a>
 </div>
 <?php
 get_footer();

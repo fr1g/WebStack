@@ -12,25 +12,23 @@
  */
 if ( ! defined( 'ABSPATH' ) ) { exit; }  ?>
 <nav class="navbar user-info-navbar" role="navigation">
-    <div class="navbar-content">
+  <a href="#" class="hidden-xs" data-toggle="sidebar" style="display: block;">
+      <i class="fa fa-bars"></i>
+  </a>
+  <div class="grow"></div>
+  <a href="https://github.com/owen0o0/WebStack" class="hidden-xs hidden-sm" target="_blank" style="display: block;">
+    <i class="fa fa-github"></i> GitHub
+  </a>
+
+    <!-- <div class="navbar-content">
       <ul class="user-info-menu list-inline list-unstyled">
         <li class="hidden-xs">
-            <a href="#" data-toggle="sidebar">
-                <i class="fa fa-bars"></i>
-            </a>
+
         </li>
-        <!-- 天气 
-        <li>
-          <div id="he-plugin-simple"></div>
-          <script>WIDGET = {CONFIG: {"modules": "12034","background": 5,"tmpColor": "aaa","tmpSize": 16,"cityColor": "aaa","citySize": 16,"aqiSize": 16,"weatherIconSize": 24,"alertIconSize": 18,"padding": "30px 10px 30px 10px","shadow": "1","language": "auto","borderRadius": 5,"fixed": "false","vertical": "middle","horizontal": "left","key": "a922adf8928b4ac1ae7a31ae7375e191"}}</script>
-          <script src="https://widget.heweather.net/simple/static/js/he-simple-common.js?v=1.1"></script>
-        </li>
-         天气 end -->
       </ul>
       <ul class="user-info-menu list-inline list-unstyled">
         <li class="hidden-sm hidden-xs">
-            <a href="https://github.com/owen0o0/WebStack" target="_blank"><i class="fa fa-github"></i> GitHub</a>
         </li>
       </ul>
-    </div>
+    </div> -->
 </nav>

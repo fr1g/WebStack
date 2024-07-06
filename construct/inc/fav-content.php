@@ -67,7 +67,7 @@ function fav_con($mid) { ?>
                     $_tmpn = $post->post_title;
                     $_tmp = strstr($_tmpn, '@@');
                     if($_tmp){
-                      $_tmpclass = str_replace('@@', '', $_tmp);
+                      $_tmpclass = trim( str_replace('@@', '', $_tmp) );
                       $GLOBALS['xtmp'][$_tmpclass][$_tmpn] = $GLOBALS['post'];
                     }else {
                       $GLOBALS['xtmp']['default'][$_tmpn] = $GLOBALS['post'];
@@ -104,8 +104,8 @@ function fav_con($mid) { ?>
                       <div class="panel panel-default">
                         <div class="panel-heading fix" role="tab" id="heading<?php echo $__xclass; ?>">
                           <h4 class="panel-title">
-                            <a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapse<?php echo $__xclass; ?>" aria-expanded="false" aria-controls="collapse<?php echo $__xclass; ?>">
-                              <?php echo $k; ?>
+                            <a role="button" data-toggle="collapse" class="useDefaultAnchor" data-parent="#accordion" href="#collapse<?php echo $__xclass; ?>" aria-expanded="false" aria-controls="collapse<?php echo $__xclass; ?>">
+                              <i class="fa fa-bars"></i> <?php echo $k; ?>
                             </a>
                           </h4>
                         </div>
@@ -131,6 +131,7 @@ function fav_con($mid) { ?>
                         }
                         ?>
                             <div></div>
+                            <br>
                           </div>
                         </div>
                       </div>
