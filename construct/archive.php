@@ -34,7 +34,8 @@ include( 'templates/header-nav.php' );
     else{?>
     <div class="no-search"></div>
     <?php } ?>
-    <h4 class="text-gray"><i class="icon-io-tag" style="margin-right: 27px;" id="<?php single_cat_title() ?>"></i><?php single_cat_title() ?></h4>
+    <h4 class="label-text">
+        <i class="fa fa-send" style="margin-right: 10px;" id="<?php single_cat_title() ?>"></i><?php single_cat_title() ?></h4>
     <div class="row">  
 		<?php if ( have_posts() ) : ?>
 		<?php while ( have_posts() ) : the_post(); 

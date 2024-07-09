@@ -107,7 +107,8 @@ include( 'templates/header-nav.php' );
                         <?php edit_post_link(__('编辑','i_theme'), '<span class="edit-link">', '</span>' ); ?>
                 </div>
 
-                <h4 class="text-gray mt-4"><i class="icon-io-tag" style="margin-right: 27px;" id="relevant_c"></i><?php _e('相关导航','i_theme') ?></h4>
+                <h4 class="label-text mt-4">
+                    <i class="fa fa-send" style="margin-right: 10px;" id="relevant_c"></i><?php _e('相关导航','i_theme') ?></h4>
                 <div class="row mb-5"> 
                     <?php
                     $post_num = 6;

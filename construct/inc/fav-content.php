@@ -13,7 +13,8 @@
 $xtmp;
 if ( ! defined( 'ABSPATH' ) ) { exit; }
 function fav_con($mid) { ?>
-        <h4 class="text-gray" style="display: inline-block;"><i class="icon-io-tag" style="margin-right: 27px;" id="term-<?php echo $mid->term_id; ?>"></i><?php echo $mid->name; ?></h4>
+        <h4 class="label-text" style="display: inline-block;">
+          <i class="fa fa-send" style="margin-right: 10px;" id="term-<?php echo $mid->term_id; ?>"></i><?php echo $mid->name; ?></h4>
         <?php 
         $site_n           = io_get_option('site_n');
         $category_count   = $mid->category_count;
@@ -24,7 +25,7 @@ function fav_con($mid) { ?>
           echo "<a class='btn-move' href='$link'>more+</a>";
         }
         ?>
-        <div class="row">
+        <div class="xrow grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-3.5 ">
         <?php   
         #single inside 2nd class
           //定义$post为全局变量，这样之后的输出就不会是同一篇文章了
@@ -46,7 +47,7 @@ function fav_con($mid) { ?>
           );
           $myposts = new WP_Query( $args );
           if(!$myposts->have_posts()): ?>
-          <div class="col-lg-12">
+          <div class="col-lg-12 p0  col-span-full">
             <div class="nothing"><?php _e('没有内容','i_theme') ?></div>
           </div>
           <?php
@@ -82,11 +83,8 @@ function fav_con($mid) { ?>
                   $GLOBALS['post'] = $i_post;
               ?>
                 
-                      <div class="xe-card <?php echo io_get_option('columns') ?> <?php echo get_post_meta($post->ID, '_wechat_qr', true)? 'wechat':''?>">
+                      <div <?php echo 'style="z-index: calc(1000 + '. $post->ID . ' + '. ($post->_sites_order ?? 0) . ') !important"'?> class="z-card-container p0  <?php // echo io_get_option('columns') ?> <?php echo get_post_meta($post->ID, '_wechat_qr', true)? 'wechat':''?>">
                         <!-- here start to insert cards -->
-                        <?php 
-
-                        ?>
                         <?php include( get_theme_file_path() .'/templates/site-card.php' ); ?>
                       </div>
 
@@ -100,17 +98,18 @@ function fav_con($mid) { ?>
                     $__xclass = hash('md5', $k);
                     // echo $__xclass . '    xx ' . $k;
                     ?>
-                    <div class="panel-group mt-3 col-xs-12" id="accordion" role="tablist" aria-multiselectable="true">
+                    <div class="panel-group  col-xs-12 p0  col-span-full" id="accordion" role="tablist" aria-multiselectable="true">
                       <div class="panel panel-default">
-                        <div class="panel-heading fix" role="tab" id="heading<?php echo $__xclass; ?>">
-                          <h4 class="panel-title">
-                            <a role="button" data-toggle="collapse" class="useDefaultAnchor" data-parent="#accordion" href="#collapse<?php echo $__xclass; ?>" aria-expanded="false" aria-controls="collapse<?php echo $__xclass; ?>">
+                          <a role="button" role="tab" id="heading<?php echo $__xclass; ?>"
+                              data-toggle="collapse" class="useDefaultAnchor panel-heading fix panel-title" 
+                              data-parent="#accordion" href="#collapse<?php echo $__xclass; ?>" aria-expanded="false" 
+                              aria-controls="collapse<?php echo $__xclass; ?>">
+                            <h4 class="panel-title">  
                               <i class="fa fa-bars"></i> <?php echo $k; ?>
-                            </a>
-                          </h4>
-                        </div>
+                            </h4>
+                          </a>
                         <div id="collapse<?php echo $__xclass; ?>" class="panel-collapse collapse d-grid fix" style="" role="tabpanel" aria-labelledby="heading<?php echo $__xclass; ?>">
-                          <div class="panel-body fix row col-xs-12">
+                          <div class="z-panel-body fix xrow col-xs-12 grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-3.5 little-down">
                       <?php
                         foreach($v as $i_post)      {
                           $GLOBALS['post'] = $i_post;
@@ -118,11 +117,7 @@ function fav_con($mid) { ?>
                       ?>
 
                     
-                            <div class="xe-card <?php echo io_get_option('columns') ?> <?php echo get_post_meta($__xid, '_wechat_qr', true)? 'wechat':''?>">
-                              <!-- here start to insert cards -->
-                              <?php 
-
-                              ?>
+                            <div <?php echo 'style="z-index: calc(1000 + '. $post->ID . ')  !important"'?> class=" z-card-container p0 <?php // echo io_get_option('columns') ?> <?php echo get_post_meta($__xid, '_wechat_qr', true)? 'wechat':''?>">
                               <?php include( get_theme_file_path() .'/templates/site-card.php' ); ?>
                             </div>
 
@@ -130,8 +125,10 @@ function fav_con($mid) { ?>
                       <?php  
                         }
                         ?>
-                            <div></div>
-                            <br>
+                            <div class="col-xs-12 col-span-full " style="height: 0">
+                              <!-- <br> -->
+                            </div>
+                            
                           </div>
                         </div>
                       </div>

@@ -21,8 +21,30 @@ console.error = function(...data){
 }
 const _ua = navigator.userAgent;
 
+const RegisterMouseInEvent = (e) => {
+	let controling = e.target.children[2];
+	controling.click();
+}
+const RegisterMouseAuEvent = (e) => {
+	let controling = e.target.children[1];
+	if(controling.getAttribute('aria-expanded') == 'true') e.target.children[2].click();
+}
 
+let navbar = document.getElementById('top-nav');
+window.addEventListener('load', () => {
+	for(let sig of document.getElementsByClassName('z-card-container')){
+		sig.addEventListener('mouseenter', (e) => {RegisterMouseInEvent(e)});
+		sig.addEventListener('mouseleave', (e) => {RegisterMouseAuEvent(e)});
+	}
+
+window.addEventListener('resize', () => {
+	navbar.setAttribute('style', `
+		width: calc(100% - ${window.getComputedStyle(document.getElementById('side-bar')).width});
+	`);
+});
 console.log('LOAD: Frig Patch!');
+});
+
 // END OF PATCH
 
 
@@ -209,14 +231,17 @@ function trigger_resizable()
 			$(el).on('click', function(ev)
 			{
 				ev.preventDefault();
+				navbar.removeAttribute('style');
 				if(public_vars.$sidebarMenu.hasClass('collapsed'))
 				{
 					public_vars.$sidebarMenu.removeClass('collapsed');
+					navbar.classList.replace('collapsed', 'expanded');
 					ps_init();
 				}
 				else
 				{
 					public_vars.$sidebarMenu.addClass('collapsed');
+					navbar.classList.replace('expanded', 'collapsed');
 					ps_destroy();
 				}
 				$(window).trigger('xenon.resize');

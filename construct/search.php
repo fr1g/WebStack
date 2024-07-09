@@ -27,7 +27,7 @@ get_header();
 
 	<div class="row">
 		<div class="col-12 col-lg-8 mx-auto">
-			<h4 class="text-gray"><i class="fa fa-search" style="margin-right: 27px;"></i>“<?php echo $s; ?>” <?php _e('的搜索结果','i_theme'); ?></h4>
+			<h4 class="label-text"><i class="fa fa-search" style="margin-right: 27px;"></i>“<?php echo $s; ?>” <?php _e('的搜索结果','i_theme'); ?></h4>
         	<div class="row">
                  
 			<?php if ( !have_posts() ) : ?>

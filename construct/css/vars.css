@@ -1,0 +1,9 @@
+:root{
+    --theme-base-bg: rgba(44, 46, 47, var(--this-bg-opacity));
+    --theme-main-bg: rgba(56, 56, 56, var(--this-bg-opacity));
+    --theme-secondary-bg: rgba(76, 76, 76, var(--this-bg-opacity));
+    --theme-info-bg: rgba(32, 32, 32, var(--this-bg-opacity));
+    --this-bg-opacity: 1;
+    --move-bit-upward: 9px;
+    ---move-bit-upward: -5px;
+}

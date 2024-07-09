@@ -34,5 +34,6 @@ if ( ! defined( 'ABSPATH' ) ) { exit; }
 <?php wp_head(); ?>
 </head> 
  <body class="page-body <?php echo io_get_option('theme_mode')?>">
+ 
     <div class="page-container">
       

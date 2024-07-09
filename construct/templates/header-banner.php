@@ -11,24 +11,13 @@
  * @Description: 
  */
 if ( ! defined( 'ABSPATH' ) ) { exit; }  ?>
-<nav class="navbar user-info-navbar" role="navigation">
+<nav id="top-nav" class="navbar user-info-navbar expanded hidden-xs " role="navigation">
   <a href="#" class="hidden-xs" data-toggle="sidebar" style="display: block;">
       <i class="fa fa-bars"></i>
   </a>
   <div class="grow"></div>
-  <a href="https://github.com/owen0o0/WebStack" class="hidden-xs hidden-sm" target="_blank" style="display: block;">
+  <a href="https://github.com/owen0o0/WebStack" class="hidden-xs ?hidden-sm" target="_blank" style="display: block;">
     <i class="fa fa-github"></i> GitHub
   </a>
 
-    <!-- <div class="navbar-content">
-      <ul class="user-info-menu list-inline list-unstyled">
-        <li class="hidden-xs">
-
-        </li>
-      </ul>
-      <ul class="user-info-menu list-inline list-unstyled">
-        <li class="hidden-sm hidden-xs">
-        </li>
-      </ul>
-    </div> -->
 </nav>

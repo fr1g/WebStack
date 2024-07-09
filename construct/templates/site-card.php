@@ -62,40 +62,61 @@ if ( ! defined( 'ABSPATH' ) ) { exit; }
                 }
             } 
 
-            $__this_info = get_post_meta($post->ID, '_sites_sescribe', true) ?: str_replace('<br>', '', trim(preg_replace("/(\&nbsp\;|　|\xc2\xa0)/", "", get_the_excerpt($post->ID))))
-            
+            $__this_info = get_post_meta($post->ID, '_sites_sescribe', true) ?: str_replace('<br>', '', trim(preg_replace("/(\&nbsp\;|　|\xc2\xa0)/", "", get_the_excerpt($post->ID)))); 
+            $__megax = md5($__this_info . $post->ID);
+            $__originalInfo = get_post_meta($post->ID, 'maintain', true);
+            if($__originalInfo == '') $__originalInfo = 'gray:null';
+            $__originalInfo = explode(':', $__originalInfo);
+            // echo $__originalInfo;
+            // if no data, return gray:null
+        
             ?>
-            <div class="z-card-container">
-                <a href="<?php echo $url ?>" target="<?php echo $blank ?>" class="xe-widget xe-conversations box2 label-info"  title="<?php echo $title ?>">
-                    <div class="xe-comment-entry">
-                        <div class="xe-user-img">
+                <a href="<?php echo $url ?>" target="<?php echo $blank ?>" class="cardTrigger"  title="<?php echo $title ?>">
+                    <div class="card-layout">
+                        <div class="wrap-icon">
                             <!-- 卡片具体定义 默认行为 -->
                             <?php if(io_get_option('lazyload')): ?>
-                            <img class="img-circle lazy" src="<?php echo $default_ico; ?>" data-src="<?php echo get_post_meta($post->ID, '_thumbnail', true)? get_post_meta($post->ID, '_thumbnail', true): (io_get_option('ico_url') .format_url($link_url) . io_get_option('ico_png')) ?>" onerror="javascript:this.src='<?php echo $default_ico; ?>'" width="40">
+                            <img class="img-circle fix lazy" src="<?php echo $default_ico; ?>" data-src="<?php echo get_post_meta($post->ID, '_thumbnail', true)? get_post_meta($post->ID, '_thumbnail', true): (io_get_option('ico_url') .format_url($link_url) . io_get_option('ico_png')) ?>" onerror="javascript:this.src='<?php echo $default_ico; ?>'" width="40">
                             <?php else: ?>
-                            <img class="img-circle lazy" src="<?php echo get_post_meta($post->ID, '_thumbnail', true)? get_post_meta($post->ID, '_thumbnail', true): (io_get_option('ico_url') .format_url($link_url) . io_get_option('ico_png')) ?>" onerror="javascript:this.src='<?php echo $default_ico; ?>'" width="40">
+                            <img class="img-circle fix lazy" src="<?php echo get_post_meta($post->ID, '_thumbnail', true)? get_post_meta($post->ID, '_thumbnail', true): (io_get_option('ico_url') .format_url($link_url) . io_get_option('ico_png')) ?>" onerror="javascript:this.src='<?php echo $default_ico; ?>'" width="40">
                             <?php endif ?>
                         </div>
-                        <div class="xe-comment">
-                            <div class="xe-user-name overflowClip_1">
+                        <div class="pl-3 card-handle">
+                            <div class="?xe-user-name overflowClip_1">
                                 <strong>
                                     <?php 
                                         $_tmptitl = $post->post_title;
                                         $tmp = strstr($_tmptitl, '@@');
                                         if($tmp) $_tmptitl = str_replace('@@', '', $_tmptitl);
-                                        
-                                        // $theName = ;
                                         echo $_tmptitl ;?>
                                 </strong>
                             </div>
                             <p class="overflowClip_1"><?php echo $__this_info; ?></p>
                         </div>
+
+                        <div class="maintain-indicator">
+
+
+                                
+                            <span class="maintain">
+                                <?php echo ($__originalInfo[1] == 'null' ? '未知' : $__originalInfo[1]) ; ?>
+                            </span>
+                            <i class="status-indicator" style="background-color: <?php echo $__originalInfo[0] ; ?>"></i>
+                                
+                        </div>
                     </div>
                 </a>
-                <div class="z-card-tooltip" <?php echo ($__this_info == '' ? ('style="display: none !important"') : '')?>>
-                    <p <?php if(strlen($__this_info) >= 20) echo 'style="text-indent: 4ch"'; ?>>
-                        <?php echo str_replace('\n', '<br/>', $__this_info);?>&nbsp;
+                <div <?php  if(strlen($__this_info) <= 0) echo 'style="display: none !important" '; else echo 'id="EXX' . $__megax . '" '; ?>
+                class="z-card-tooltip  collapse "     >
+                    <p <?php if(strlen($__this_info) >= 20) echo 'style="text-indent: 4ch; margin: 0;" class="require-scroll"'; ?>>
+                        <?php echo (strlen($__this_info) <= 0 ? '@EMPTY@' : str_replace('\n', '<br/>', $__this_info));?>&nbsp;
+                        
                     </p>
                 </div>
-            </div>
+                <a style="width: 0 !important; height: 0 !important; overflow: hidden !important; margin: 0 !important;" 
+                    data-toggle="collapse" href="#<?php echo 'EXX'. $__megax; ?>" 
+                    aria-expanded="false" aria-controls="<?php echo 'EXX'. $__megax; ?>">
+                </a>
+
+
             

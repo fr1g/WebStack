@@ -26,7 +26,7 @@ else{?>
 }
 ?>
 
-<div class="sites-list" style="margin-bottom: 8.5rem;">
+<div class="sites-list" style="margin-bottom: 18rem;">
 <?php 
 # . '<div class="ad ad-home col-md-12 visible-md-block visible-lg-block">' . stripslashes( io_get_option('ad_home') ) . '</div>' . 
 if(!wp_is_mobile() && io_get_option('ad_home_s')) 
@@ -59,10 +59,6 @@ foreach($categories as $category) {
 get_template_part( 'templates/friendlink' ); 
 ?>
 </div>
-<div class="go-up">
-    <a href="#" rel="go-top">
-        <i class="fa fa-angle-up"></i>
-    </a>
-</div>
+
 <?php
 get_footer();

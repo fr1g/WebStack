@@ -114,5 +114,10 @@ if ($police_icp = io_get_option('police_icp')) {
 <!-- 自定义代码 -->
 <?php echo io_get_option('code_2_footer');?>
 <!-- end 自定义代码 -->
+<div class="go-up">
+    <a href="#" rel="go-top">
+        <i class="fa fa-angle-up"></i>
+    </a>
+</div>
 </body>
 </html>

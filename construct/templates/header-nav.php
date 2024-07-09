@@ -11,7 +11,7 @@
  * @Description: 
  */
 if ( ! defined( 'ABSPATH' ) ) { exit; }  ?>
-<div class="sidebar-menu toggle-others fixed">
+<div class="sidebar-menu toggle-others fixed" id="side-bar">
             <div class="sidebar-menu-inner">
                 <header class="logo-env">
                     <!-- logo -->
