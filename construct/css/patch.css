@@ -132,7 +132,7 @@ body{
 }
 .z-card-container>a{
     box-shadow: rgb(65, 64, 64) 1px 2px 1rem; /* 3px; */
-
+    border-radius: .26rem !important;
 }
 .z-tooltip{
     /* display: block !important; */

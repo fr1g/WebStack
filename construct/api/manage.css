@@ -1,0 +1,87 @@
+
+    *{
+        transition-property:color, background-color, border-color, fill, stroke, opacity, box-shadow, transform, filter, -webkit-text-decoration-color, -webkit-backdrop-filter !important;transition-property:color, background-color, border-color, text-decoration-color, fill, stroke, opacity, box-shadow, transform, filter, backdrop-filter !important;transition-property:color, background-color, border-color, text-decoration-color, fill, stroke, opacity, box-shadow, transform, filter, backdrop-filter, -webkit-text-decoration-color, -webkit-backdrop-filter !important;
+        transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1) !important;
+        transition-duration :150ms !important;
+        animation: .3s cubic-bezier(0.4, 0, 0.2, 1) fading forwards;
+    }
+    @keyframes fading {
+        from{opacity: 0;}
+        to{opacity: 1;}
+    }
+    tr{
+        border-top: 1px solid black;
+    }
+    td{
+        padding: .26rem;
+        border-right: 1px dashed black;
+    }
+    tfoot{
+        padding-top: .3rem;
+        background-color: rgb(224, 223, 222) !important;
+    }
+    thead, thead > *, .thead > td{
+        background-color: rgb(224, 223, 222) !important;
+        font-weight: bold !important;
+        border-bottom: 2px solid black !important;
+    }
+    tr:nth-child(even){
+        background-color: rgb(250, 249, 248);
+    }    
+    tr:nth-child(odd){
+        background-color: rgb(237, 236, 235);
+    }
+    .foot>td{
+        background-color: rgb(224, 223, 222) !important;
+        border-top: 1px solid black !important;
+    }
+    table{
+        font-size: normal;
+        border: 2px solid gray;
+        box-shadow: lightgray 4px 4px 0 2px;
+    }
+    .stat-line{
+        max-width: 60px !important;
+    }
+    .pagetool-line{
+        width: 110px;
+        text-align: center;
+    }
+    .pagetool-line>*{
+        text-align: center;
+        width: 100%;
+
+    }
+    .op-line{
+        width: 113px;
+    }
+    .disabled{
+        cursor: not-allowed;
+        opacity: .6 !important;
+
+    }
+    .disabled > * {
+        pointer-events: none !important;
+    }
+    .center{
+        text-align: center;
+    }
+    .emptyResult{
+
+    }
+    .detailAlert{
+        cursor: pointer;
+        max-width: 500px;
+        text-overflow: ellipsis;
+        overflow: hidden;
+        white-space: nowrap;
+    }
+    .error{
+        background-color: rgba(214, 99, 96, .6) !important;
+        position: relative;
+    }
+    .error::after{
+        content: '数值错误';
+        position: absolute;
+
+    }
