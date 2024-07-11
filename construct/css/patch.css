@@ -90,7 +90,7 @@ body{
 .main-content{
     /* MAKE THE CONTENT MORE READABLE */
     background-color: rgba(86, 78, 78, 0.538) !important;
-    backdrop-filter: blur(3px);
+    backdrop-filter: blur(8px);
 
 
 }

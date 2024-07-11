@@ -58,8 +58,14 @@ global $wpdb;
             $____tocat = (int)(explode('(', explode(')', $_classes[ $___prepare['type']] ?? '')[0])[1] ?? -1);
             if($____tocat == -1) echo '<br>失败：有不存在的分类' . $___prepare['type'] . '，将会尝试直接添加到无分类中。';
             else wp_set_object_terms($__npid, [$____tocat], 'favorites', false);
-            add_post_meta($__npid, '_site_link', $___prepare['link']);
-            add_post_meta($__npid, '_site_sescribe', $___prepare['easy']);
+            add_post_meta($__npid, '_sites_link', $___prepare['link']);
+            add_post_meta($__npid, '_sites_sescribe', $___prepare['easy']);
+            add_post_meta($__npid, '_thumbnail', $___prepare['logo'] ?? 'none');
+            add_post_meta($__npid, '_edit_lock', time().':1');
+            add_post_meta($__npid, '_edit_last', '1');
+            add_post_meta($__npid, '_sites_order', '');
+            add_post_meta($__npid, '_wechat_qr', '');
+            add_post_meta($__npid, '_visible', '');
             $wpdb -> query('update wp_ex_submissions set next = \''.$__npid.'\', stat = \'' . $__opTo . '\' where id = '. $__opTarget);
         }
 
@@ -104,6 +110,7 @@ global $wpdb;
                 <td>名称</td>
                 <td>链接 & 简介</td>
                 <td>分类</td>
+                <td>查看logo</td>
                 <td>详细信息（点击来通过alert查看）</td>
                 <td>状态</td>
                 <td>操作</td>
@@ -123,6 +130,8 @@ global $wpdb;
                         <a href="<?php echo $__s['link']; ?>" target="_blank"><?php echo $__s['link']; ?></a>
                     </td>
                     <td><?php echo $_classes[$__s['type']] ?? ($__s['type'] . '（不复存在的分类）'); ?></td>
+                    <!-- none or '' are all for no-logo -->
+                    <td><a href="javascript:showLogo(`<?php echo $__s['logo'] ?? 'none'; ?>`)">点击查看</a></td>
                     <td class="detailAlert"><?php echo $__s['dscr']; ?></td>
                     <td class="stat-line"><?php echo $__s['stat']; ?></td>
                     <td class="op-line">
@@ -175,7 +184,7 @@ global $wpdb;
                         下一页
                     </a>
                 </td>
-                <td class="stat-line">
+                <td class="stat-line" colspan="2">
                     如要删除全部拒绝项目(deny)，需要先切换到【拒绝项目】过滤器
                 </td>
                 <td>
@@ -193,8 +202,30 @@ global $wpdb;
             </tr>
         </tfoot>
     </table>
+<div style="height: 128px; width: 128px; margin-top: 3rem; " id="logopreview" class="onsize" >
+    <img src="" alt="获取失败，详见f12" style="width: 100% !important; height: 100% !important; display: none; background-color: gray" class="img-circle fix" />
+    <div style="width: 100% !important; height: 100% !important; " class="cntr" >
+                    <div>无图片</div>
+    </div>
+</div>
+<script>
+    let logoco = document.getElementById('logopreview');
+    function showLogo(path = 'none'){
+        if(path == '' || path == 'none'){
+            logoco.children[0].style.display = 'none';
+            logoco.children[1].style.display = 'none';
+            setTimeout(() => {
+                logoco.children[1].style.display = 'grid';
+            }, 123);
 
-    <script>
+        }else{
+            logoco.children[0].style.display = 'none';
+            logoco.children[0].setAttribute('src', '');
+            logoco.children[0].style.display = 'block';
+            logoco.children[1].style.display = 'none';
+            logoco.children[0].setAttribute('src', path);
+        }
+    }
         try{
             for(let elm of document.getElementsByClassName('detailAlert')){
                 elm.addEventListener('click', (e)=> {alert(`内容：\n ${e.target.innerHTML}`)});

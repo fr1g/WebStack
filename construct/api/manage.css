@@ -36,7 +36,7 @@
         background-color: rgb(224, 223, 222) !important;
         border-top: 1px solid black !important;
     }
-    table{
+    table, .onsize{
         font-size: normal;
         border: 2px solid gray;
         box-shadow: lightgray 4px 4px 0 2px;
@@ -53,6 +53,14 @@
         width: 100%;
 
     }
+    .img-circle.fix{
+        object-fit: cover !important;
+        height: 40px !important;
+        width: 40px !important;
+        min-height: 40px !important;
+        min-width: 40px !important;
+        object-position: center !important;
+    }
     .op-line{
         width: 113px;
     }
@@ -63,6 +71,12 @@
     }
     .disabled > * {
         pointer-events: none !important;
+    }
+    .cntr{
+        display: grid;
+        justify-content: center;
+        align-items: center;
+        justify-items: center;
     }
     .center{
         text-align: center;

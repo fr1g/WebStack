@@ -86,8 +86,7 @@ if ( ! defined( 'ABSPATH' ) ) { exit; }
                                 <strong>
                                     <?php 
                                         $_tmptitl = $post->post_title;
-                                        $tmp = strstr($_tmptitl, '@@');
-                                        if($tmp) $_tmptitl = str_replace('@@', '', $_tmptitl);
+                                        if(strstr($_tmptitl, '@@')) $_tmptitl = explode('@@', $_tmptitl)[0];
                                         echo $_tmptitl ;?>
                                 </strong>
                             </div>

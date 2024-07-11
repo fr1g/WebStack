@@ -26,6 +26,7 @@ try {
                 id int auto_increment unique not null, 
                 name varchar(64) not null, 
                 link varchar(128) not null,
+                logo varchar(256) default '',
                 easy varchar(128) not null,
                 type varchar(64) not null,
                 stat varchar(10) not null default 'pending',
