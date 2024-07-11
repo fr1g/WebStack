@@ -38,140 +38,143 @@ global $wpdb;
 
     $_dataSet = $wpdb -> get_results($wpdb -> prepare(queryPage($_forPage)), ARRAY_A);
 ?>
-<h3>管理投稿</h3>
-<h5>当前页面：<?php echo $_forPage; ?>, 总共有 <?php echo $_totalCounts; ?>条记录，合计 <?php echo $_pages; ?>页</h5>
-<p>
-    由于可能存在虚报更新状态的情况，所以需要亲自确认更新频率然后手动更新条目。<br>
-    PHP写得太难受了，所以这丑陋UI就先忍忍罢！(我甚至也不打算写响应式了，这里是一点css框架都用不了) <br>
-    <!-- <?php echo $_rqi; ?> -->
-</p>
-<style> /* from: <?php echo (get_template_directory() . '/api/manage.css.php'); ?> */ <?php include(get_template_directory() . '/api/manage.css') ?> </style>
-<script>
-    let CURR_PAGE = <?php echo $_forPage; ?>,
-        TOTAL_PAGES = <?php echo $_pages; ?>,
-        EACH_PAGE = <?php echo $_eachPageRess; ?>;
+<div style="z-index: -1 !important">
+    
+    <h3>管理投稿</h3>
+    <h5>当前页面：<?php echo $_forPage; ?>, 总共有 <?php echo $_totalCounts; ?>条记录，合计 <?php echo $_pages; ?>页</h5>
+    <p>
+        由于可能存在虚报更新状态的情况，所以需要亲自确认更新频率然后手动更新条目。<br>
+        PHP写得太难受了，所以这丑陋UI就先忍忍罢！(我甚至也不打算写响应式了，这里是一点css框架都用不了) <br>
+        <!-- <?php echo $_rqi; ?> -->
+    </p>
+    <style> /* from: <?php echo (get_template_directory() . '/api/manage.css.php'); ?> */ <?php include(get_template_directory() . '/api/manage.css') ?> </style>
+    <script>
+        let CURR_PAGE = <?php echo $_forPage; ?>,
+            TOTAL_PAGES = <?php echo $_pages; ?>,
+            EACH_PAGE = <?php echo $_eachPageRess; ?>;
 
-    if(window.location.href.includes('opr=0tokillall')) window.location.replace(`${window.location.href}`.replace('opr=0tokillall', ''));
+        if(window.location.href.includes('opr=0tokillall')) window.location.replace(`${window.location.href}`.replace('opr=0tokillall', ''));
 
-</script>
-<!-- \
-php -(write dynamic content of variable)-> js
-js -(use uri query parameters)-> php
+    </script>
+    <!-- \
+    php -(write dynamic content of variable)-> js
+    js -(use uri query parameters)-> php
 
--->
-<table class="table">
-    <thead>
-        <tr class="thead">
-            <td>编号</td>
-            <td>名称</td>
-            <td>链接 & 简介</td>
-            <td>分类</td>
-            <td>详细信息（点击来通过alert查看）</td>
-            <td>状态</td>
-            <td>操作</td>
-        </tr>
-    </thead>
-    <tbody>
-        <?php 
-            // echo json_encode($_classes);
-            if(count($_dataSet) != 0)
-            foreach($_dataSet as $__s){
-        ?>
-            <tr>
-                <td class="center"><?php echo $__s['id']; ?></td>
-                <td><?php echo $__s['name']; ?></td>
-                <td>
-                    <?php echo $__s['easy']; ?><br>
-                    <a href="<?php echo $__s['link']; ?>" target="_blank"><?php echo $__s['link']; ?></a>
+    -->
+    <table class="table">
+        <thead>
+            <tr class="thead">
+                <td>编号</td>
+                <td>名称</td>
+                <td>链接 & 简介</td>
+                <td>分类</td>
+                <td>详细信息（点击来通过alert查看）</td>
+                <td>状态</td>
+                <td>操作</td>
+            </tr>
+        </thead>
+        <tbody>
+            <?php 
+                // echo json_encode($_classes);
+                if(count($_dataSet) != 0)
+                foreach($_dataSet as $__s){
+            ?>
+                <tr>
+                    <td class="center"><?php echo $__s['id']; ?></td>
+                    <td><?php echo $__s['name']; ?></td>
+                    <td>
+                        <?php echo $__s['easy']; ?><br>
+                        <a href="<?php echo $__s['link']; ?>" target="_blank"><?php echo $__s['link']; ?></a>
+                    </td>
+                    <td><?php echo $_classes[$__s['type']]; ?></td>
+                    <td class="detailAlert"><?php echo $__s['dscr']; ?></td>
+                    <td class="stat-line"><?php echo $__s['stat']; ?></td>
+                    <td class="op-line">
+                        <span class="<?php if($_filter == 'accept') echo 'disabled'; ?>">
+                            <a href="<?php echo $_rqi.'forpage='.$_forPage.'&opr='.$__s['id'].'toacceptfr'.$__s['stat'].'&filtering='.$_filter;?>">通过</a>
+                        </span> 
+                        | 
+                        <span class="<?php if($_filter == 'deny') echo 'disabled'; ?>">
+                            <a href="<?php echo $_rqi.'forpage='.$_forPage.'&opr='.$__s['id'].'todenyfr'.$__s['stat'].'&filtering='.$_filter;?>">拒绝</a>
+                        </span> 
+                        | 
+                        <span class="<?php if($_filter == 'pending') echo 'disabled'; ?>">
+                            <a href="<?php echo $_rqi.'forpage='.$_forPage.'&opr='.$__s['id'].'topendingfr'.$__s['stat'].'&filtering='.$_filter;?>">撤销</a>
+                        </span>
+                    </td>
+                </tr>
+            <?php }
+                else{
+            ?>
+                <tr>
+                    <td class="emptyResult" colspan="7">返回了空结果。</td>
+                </tr>
+            <?php } ?>
+        </tbody>
+        <!-- 
+            通过：转移到accept，然后录入到对应表 
+            拒绝：转移到deny，如果先前为accept，如果对应表中存在这个项目（名称和网址完全匹配）则将删除该项目。
+            撤销：恢复到pending状态，如果先前为accept，如果对应表中存在这个项目（名称和网址完全匹配）则将删除该项目。
+            在某个状态下，将会仅使另外两个状态有效可操作。
+        -->
+        <tfoot>
+            <tr class="foot">
+                <td></td>
+                <td class="<?php if($_forPage - 1 == 0) echo 'disabled'; ?> pagetool-line">
+                    <a id="prev" href="#">上一页</a>
                 </td>
-                <td><?php echo $_classes[$__s['type']]; ?></td>
-                <td class="detailAlert"><?php echo $__s['dscr']; ?></td>
-                <td class="stat-line"><?php echo $__s['stat']; ?></td>
+                <td id="pagecode" class="pagetool-line">
+                    <input type="number" id="pcodeInput" class=""
+                        placeholder="<?php echo $_forPage; ?> / <?php echo $_pages; ?>" 
+                        min="<?php if($_pages == 0) echo 0; else echo 1; ?>" max="<?php echo $_pages; ?>"
+                        title="最大为<?php echo $_pages; ?>，最小为<?php if($_pages == 0) echo 0; else echo 1; ?>"
+                    />
+                </td>
+                <td class="<?php if($_forPage == $_pages) echo 'disabled'; ?> pagetool-line">
+                    <a id="next" href="#">下一页</a>
+                </td>
+                <td class="stat-line">
+                    如要删除全部拒绝项目(deny)，需要先切换到【拒绝项目】过滤器
+                </td>
+                <td>
+                    <select name="filt" id="filt">
+                        <option value="pending" <?php if($_filter == 'pending') echo 'selected'; ?>>待确认</option>
+                        <option value="accept" <?php if($_filter == 'accept') echo 'selected'; ?>>已接受</option>
+                        <option value="deny" <?php if($_filter == 'deny') echo 'selected'; ?>>已拒绝</option>
+                    </select>
+                </td>
                 <td class="op-line">
-                    <span class="<?php if($_filter == 'accept') echo 'disabled'; ?>">
-                        <a href="<?php echo $_rqi.'forpage='.$_forPage.'&opr='.$__s['id'].'toacceptfr'.$__s['stat'].'&filtering='.$_filter;?>">通过</a>
-                    </span> 
-                    | 
-                    <span class="<?php if($_filter == 'deny') echo 'disabled'; ?>">
-                        <a href="<?php echo $_rqi.'forpage='.$_forPage.'&opr='.$__s['id'].'todenyfr'.$__s['stat'].'&filtering='.$_filter;?>">拒绝</a>
-                    </span> 
-                    | 
-                    <span class="<?php if($_filter == 'pending') echo 'disabled'; ?>">
-                        <a href="<?php echo $_rqi.'forpage='.$_forPage.'&opr='.$__s['id'].'topendingfr'.$__s['stat'].'&filtering='.$_filter;?>">撤销</a>
+                    <span class="<?php if($_filter != 'deny') echo 'disabled'; ?>">
+                        <a href="<?php echo $_rqi.'page=s-man&forpage='.$_forPage.'&opr=0tokillall&filtering=deny';?>">删除全部拒绝项目</a>
                     </span>
                 </td>
             </tr>
-        <?php }
-            else{
-        ?>
-            <tr>
-                <td class="emptyResult" colspan="7">返回了空结果。</td>
-            </tr>
-        <?php } ?>
-    </tbody>
-    <!-- 
-        通过：转移到accept，然后录入到对应表 
-        拒绝：转移到deny，如果先前为accept，如果对应表中存在这个项目（名称和网址完全匹配）则将删除该项目。
-        撤销：恢复到pending状态，如果先前为accept，如果对应表中存在这个项目（名称和网址完全匹配）则将删除该项目。
-        在某个状态下，将会仅使另外两个状态有效可操作。
-    -->
-    <tfoot>
-        <tr class="foot">
-            <td></td>
-            <td id="prev" class="<?php if($_forPage - 1 == 0) echo 'disabled'; ?> pagetool-line">
-                <a href="#">上一页</a>
-            </td>
-            <td id="pagecode" class="pagetool-line">
-                <input type="number" id="pcodeInput" class=""
-                    placeholder="<?php echo $_forPage; ?> / <?php echo $_pages; ?>" 
-                    min="<?php if($_pages == 0) echo 0; else echo 1; ?>" max="<?php echo $_pages; ?>"
-                    title="最大为<?php echo $_pages; ?>，最小为<?php if($_pages == 0) echo 0; else echo 1; ?>"
-                />
-            </td>
-            <td id="next" class="<?php if($_forPage == $_pages) echo 'disabled'; ?> pagetool-line">
-                <a href="#">下一页</a>
-            </td>
-            <td class="stat-line">
-                如要删除全部拒绝项目(deny)，需要先切换到【拒绝项目】过滤器
-            </td>
-            <td>
-                <select name="filt" id="filt">
-                    <option value="pending" <?php if($_filter == 'pending') echo 'selected'; ?>>待确认</option>
-                    <option value="accept" <?php if($_filter == 'accept') echo 'selected'; ?>>已接受</option>
-                    <option value="deny" <?php if($_filter == 'deny') echo 'selected'; ?>>已拒绝</option>
-                </select>
-            </td>
-            <td class="op-line">
-                <span class="<?php if($_filter != 'deny') echo 'disabled'; ?>">
-                    <a href="<?php echo $_rqi.'page=s-man&forpage='.$_forPage.'&opr=0tokillall&filtering=deny';?>">删除全部拒绝项目</a>
-                </span>
-            </td>
-        </tr>
-    </tfoot>
-</table>
+        </tfoot>
+    </table>
 
-<script>
-    try{
-        for(let elm of document.getElementsByClassName('detailAlert')){
-            elm.addEventListener('click', (e)=> {alert(`内容：\n ${e.target.innerHTML}`)});
-        }
-    }catch(ex){}
+    <script>
+        try{
+            for(let elm of document.getElementsByClassName('detailAlert')){
+                elm.addEventListener('click', (e)=> {alert(`内容：\n ${e.target.innerHTML}`)});
+            }
+        }catch(ex){}
 
-    document.getElementById('filt').addEventListener('change', (e) => {
-        window.location.replace(`${window.location.href}`.replace(window.location.search, `?page=s-man&filtering=${e.target.value}`));
-    });
-    document.getElementById('pcodeInput').addEventListener('blur', (e) => {
-        let v = e.target.value;
-        if((v > 0 && v <= TOTAL_PAGES || TOTAL_PAGES == 0 && v == 0) && v != ''){
-            if(e.target.classList.toString().includes('error')) e.target.classList.remove('error');
-            if(window.location.href.includes('forpage='))
-                window.location.replace(`${window.location.href}`.replace(`forpage=${CURR_PAGE}`, `forpage=${v}`));
-            else window.location.replace(`${window.location.href}&forpage=${v}`);
-        }else {
-            e.target.classList.add('error');
-            setTimeout(() => {
-                e.target.classList.remove('error');
-            }, 1234);
-        }
-    });
-</script>
+        document.getElementById('filt').addEventListener('change', (e) => {
+            window.location.replace(`${window.location.href}`.replace(window.location.search, `?page=s-man&filtering=${e.target.value}`));
+        });
+        document.getElementById('pcodeInput').addEventListener('blur', (e) => {
+            let v = e.target.value;
+            if((v > 0 && v <= TOTAL_PAGES || TOTAL_PAGES == 0 && v == 0) && v != ''){
+                if(e.target.classList.toString().includes('error')) e.target.classList.remove('error');
+                if(window.location.href.includes('forpage='))
+                    window.location.replace(`${window.location.href}`.replace(`forpage=${CURR_PAGE}`, `forpage=${v}`));
+                else window.location.replace(`${window.location.href}&forpage=${v}`);
+            }else {
+                e.target.classList.add('error');
+                setTimeout(() => {
+                    e.target.classList.remove('error');
+                }, 1234);
+            }
+        });
+    </script>
+</div>

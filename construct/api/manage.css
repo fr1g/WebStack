@@ -4,6 +4,7 @@
         transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1) !important;
         transition-duration :150ms !important;
         animation: .3s cubic-bezier(0.4, 0, 0.2, 1) fading forwards;
+        z-index: 0 !important;
     }
     @keyframes fading {
         from{opacity: 0;}
