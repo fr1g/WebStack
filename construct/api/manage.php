@@ -48,7 +48,7 @@ global $wpdb;
         $___prepare = ($wpdb -> get_results('select * from wp_ex_submissions where id = '. $__opTarget, ARRAY_A))[0];
         // echo json_encode($___prepare);
         $__np = [
-            'post_title' => $___prepare['name'].'@@未分类的投稿项',
+            'post_title' => explode('@@', $___prepare['name'])[0].'@@未分类的投稿项',
             'post_content' => '',
             'post_status' => 'publish',
             'post_type' => 'sites'
