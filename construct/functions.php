@@ -20,13 +20,13 @@ function fanly_remove_block_library_css() {
 add_action('admin_menu', 'submissionProccPage');
 function submissionProccPage(){
     add_menu_page( 
+        '管理投稿-投稿后台管理页面', 
         '管理投稿', 
-        '管理投稿:', 
         'manage_options', 
         's-man', 
         'submissionProccPageRender', 
         'dashicons-admin-customizer', 
-        6 
+        86.114514 
     ); 
 }
 function submissionProccPageRender() {

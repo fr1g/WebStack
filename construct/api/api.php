@@ -29,7 +29,8 @@ try {
                 easy varchar(128) not null,
                 type varchar(64) not null,
                 stat varchar(10) not null default 'pending',
-                dscr text
+                dscr text,
+                next varchar(10) default 'unset'
             )";
             $GLOBALS['wpdb'] -> query($___table);
         }

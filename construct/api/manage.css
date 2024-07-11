@@ -72,7 +72,7 @@
     }
     .detailAlert{
         cursor: pointer;
-        max-width: 500px;
+        max-width: 18vw;
         text-overflow: ellipsis;
         overflow: hidden;
         white-space: nowrap;

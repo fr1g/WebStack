@@ -1,7 +1,7 @@
 <?php 
 global $wpdb;
     global $_pages, $_eachPageRess, $_filter;
-    $_rqi = str_replace($_SERVER['QUERY_STRING'], '', $_SERVER['REQUEST_URI']);
+    $_rqi = str_replace($_SERVER['QUERY_STRING'], '', $_SERVER['REQUEST_URI']) . 'page=s-man&';
     $_reqParamSet = explode('&', $_SERVER["QUERY_STRING"]);
     $_reqParamParsed = [];
     foreach($_reqParamSet as $_reqp){
@@ -15,10 +15,55 @@ global $wpdb;
     $__opTarget = (int)explode('to', $_operation)[0];
     $__opDetail = explode('to', $_operation)[1];
     $__opFrom = 'empty';
-    if(strstr($_operation, 'fr') !== false) $__opFrom = explode('fr', $__opDetail);
-    // to PENDING
+    $__opTo = 'empty';
+    if(strstr($_operation, 'fr') !== false) {
+        $__opTo = explode('fr', $__opDetail)[0];
+        $__opFrom = explode('fr', $__opDetail)[1];
+    }
 
-    // to 
+    $_classes = [];
+    foreach(($wpdb -> get_results("select term_id, slug, name from wp_terms where slug like '%-type' and 1=1", 'ARRAY_A'))  as $x){
+        $_classes[$x['slug']] = $x['name'].' ('.$x['term_id'].')';
+    }
+
+    // 通过：转移到accept，然后录入到对应表 
+    // 拒绝：转移到deny，如果先前为accept，如果对应表中存在这个项目（名称和网址完全匹配）则将删除该项目。
+    // 撤销：恢复到pending状态，如果先前为accept，如果对应表中存在这个项目（名称和网址完全匹配）则将删除该项目。
+    // 在某个状态下，将会仅使另外两个状态有效可操作。
+
+    if($__opFrom == $__opTo && $__opFrom != 'empty') echo 'refused operation'; // 
+    elseif($__opDetail == 'killall'){ // remove all DENied
+        $wpdb->query('delete from wp_ex_submissions where stat = \'deny\'', ARRAY_A);
+    }
+    elseif($__opFrom != 'empty' && $__opTo != 'empty' && $__opTo != 'accept'){ // to PENDING and to DENY
+        // $___result = ($wpdb -> get_results('select * from wp_ex_submissions where id = '. $__opTarget))[0];
+        // check if already added into the place, get the target id
+        $___prepare = ($wpdb -> get_results('select * from wp_ex_submissions where id = '. $__opTarget, ARRAY_A))[0];
+        $wpdb -> query('update wp_ex_submissions set next = \'unset\', stat = \'' . $__opTo . '\' where id = '. $__opTarget);
+        if($___prepare['next'] != 'unset'){
+            wp_delete_post((int)$___prepare['next']);
+        }
+
+    }elseif($__opTo == 'accept'){ // to ACCEPT
+        $___prepare = ($wpdb -> get_results('select * from wp_ex_submissions where id = '. $__opTarget, ARRAY_A))[0];
+        // echo json_encode($___prepare);
+        $__np = [
+            'post_title' => $___prepare['name'].'@@未分类的投稿项',
+            'post_content' => '',
+            'post_status' => 'publish',
+            'post_type' => 'sites'
+        ];
+        $__npid = wp_insert_post($__np);
+        if($__npid){
+            $____tocat = (int)(explode('(', explode(')', $_classes[ $___prepare['type']] ?? '')[0])[1] ?? -1);
+            if($____tocat == -1) echo '<br>失败：有不存在的分类' . $___prepare['type'] . '，将会尝试直接添加到无分类中。';
+            else wp_set_object_terms($__npid, [$____tocat], 'favorites', false);
+            add_post_meta($__npid, '_site_link', $___prepare['link']);
+            add_post_meta($__npid, '_site_sescribe', $___prepare['easy']);
+            $wpdb -> query('update wp_ex_submissions set next = \''.$__npid.'\', stat = \'' . $__opTo . '\' where id = '. $__opTarget);
+        }
+
+    }
 
 
 
@@ -29,11 +74,6 @@ global $wpdb;
     function queryPage($to){
         if($to > $GLOBALS['_pages'] || $to <= 0) return 'refuse';
         else return 'select * from wp_ex_submissions where stat = \'' . $GLOBALS['_filter'] . '\' and 1=1 limit ' . (($to - 1) * $GLOBALS['_eachPageRess']) . ', ' . ($GLOBALS['_eachPageRess']);
-    }
-
-    $_classes = [];
-    foreach(($wpdb -> get_results("select slug, name from wp_terms where slug like '%-type' and 1=1", 'ARRAY_A'))  as $x){
-        $_classes[$x['slug']] = $x['name'];
     }
 
     $_dataSet = $wpdb -> get_results($wpdb -> prepare(queryPage($_forPage)), ARRAY_A);
@@ -53,18 +93,14 @@ global $wpdb;
             TOTAL_PAGES = <?php echo $_pages; ?>,
             EACH_PAGE = <?php echo $_eachPageRess; ?>;
 
-        if(window.location.href.includes('opr=0tokillall')) window.location.replace(`${window.location.href}`.replace('opr=0tokillall', ''));
+        if(window.location.href.includes('opr=')) window.location.replace(`${window.location.href}`.replace(`<?php echo 'opr=' . ($_reqParamParsed['opr'] ?? '-1tonol'); ?>`, ''));
+        
 
     </script>
-    <!-- \
-    php -(write dynamic content of variable)-> js
-    js -(use uri query parameters)-> php
-
-    -->
     <table class="table">
         <thead>
             <tr class="thead">
-                <td>编号</td>
+                <td title="如果存在括号，括号内的内容即为对应的实际发布ID">编号</td>
                 <td>名称</td>
                 <td>链接 & 简介</td>
                 <td>分类</td>
@@ -80,13 +116,13 @@ global $wpdb;
                 foreach($_dataSet as $__s){
             ?>
                 <tr>
-                    <td class="center"><?php echo $__s['id']; ?></td>
+                    <td class="center"><?php echo ' ' . $__s['id'] . ' ' . ($__s['next'] == 'unset' ? '' : (' (' . $__s['next'] . ')')); ?></td>
                     <td><?php echo $__s['name']; ?></td>
                     <td>
                         <?php echo $__s['easy']; ?><br>
                         <a href="<?php echo $__s['link']; ?>" target="_blank"><?php echo $__s['link']; ?></a>
                     </td>
-                    <td><?php echo $_classes[$__s['type']]; ?></td>
+                    <td><?php echo $_classes[$__s['type']] ?? ($__s['type'] . '（不复存在的分类）'); ?></td>
                     <td class="detailAlert"><?php echo $__s['dscr']; ?></td>
                     <td class="stat-line"><?php echo $__s['stat']; ?></td>
                     <td class="op-line">
@@ -111,27 +147,33 @@ global $wpdb;
                 </tr>
             <?php } ?>
         </tbody>
-        <!-- 
-            通过：转移到accept，然后录入到对应表 
-            拒绝：转移到deny，如果先前为accept，如果对应表中存在这个项目（名称和网址完全匹配）则将删除该项目。
-            撤销：恢复到pending状态，如果先前为accept，如果对应表中存在这个项目（名称和网址完全匹配）则将删除该项目。
-            在某个状态下，将会仅使另外两个状态有效可操作。
-        -->
+        <?php
+            $_prevLink = $_rqi.'forpage='.($_forPage - 1 == 0 ? $_forPage : $_forPage - 1). '&filtering='. $_filter;
+            $_nextLink = $_rqi.'forpage='.($_forPage == $_pages ? $_pages : $_forPage + 1). '&filtering='. $_filter;
+            // 需要保留：页面名，页码，过滤条件
+        
+        ?>
         <tfoot>
             <tr class="foot">
                 <td></td>
                 <td class="<?php if($_forPage - 1 == 0) echo 'disabled'; ?> pagetool-line">
-                    <a id="prev" href="#">上一页</a>
+                    <a id="prev" 
+                        href="<?php echo $_prevLink; ?>">
+                        上一页
+                    </a>
                 </td>
                 <td id="pagecode" class="pagetool-line">
-                    <input type="number" id="pcodeInput" class=""
-                        placeholder="<?php echo $_forPage; ?> / <?php echo $_pages; ?>" 
+                    <input type="number" id="pcodeInput" class="<?php if($_pages == 0) echo 'disabled'; ?>"
+                        placeholder="<?php echo ($_pages == 0 ? 0 : $_forPage); ?> / <?php echo $_pages; ?>" 
                         min="<?php if($_pages == 0) echo 0; else echo 1; ?>" max="<?php echo $_pages; ?>"
                         title="最大为<?php echo $_pages; ?>，最小为<?php if($_pages == 0) echo 0; else echo 1; ?>"
                     />
                 </td>
-                <td class="<?php if($_forPage == $_pages) echo 'disabled'; ?> pagetool-line">
-                    <a id="next" href="#">下一页</a>
+                <td class="<?php if($_forPage == $_pages || $pages == 0) echo 'disabled'; ?> pagetool-line">
+                    <a id="next" 
+                        href="<?php echo $_nextLink; ?>">
+                        下一页
+                    </a>
                 </td>
                 <td class="stat-line">
                     如要删除全部拒绝项目(deny)，需要先切换到【拒绝项目】过滤器
@@ -144,8 +186,8 @@ global $wpdb;
                     </select>
                 </td>
                 <td class="op-line">
-                    <span class="<?php if($_filter != 'deny') echo 'disabled'; ?>">
-                        <a href="<?php echo $_rqi.'page=s-man&forpage='.$_forPage.'&opr=0tokillall&filtering=deny';?>">删除全部拒绝项目</a>
+                    <span class="<?php if($_filter != 'deny' || $_pages == 0) echo 'disabled'; ?>">
+                        <a href="<?php echo $_rqi.'forpage='.$_forPage.'&opr=0tokillall&filtering=deny';?>">删除全部拒绝项目</a>
                     </span>
                 </td>
             </tr>

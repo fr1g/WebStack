@@ -38,12 +38,27 @@
 
     padding-top: 1rem;
 }
-.label-text{
+.type-text, .label-text{
     color: #dbd7d7 !important;
 }
+label[for="type-zhannei"]{
+    /* background-color: var(--theme-main-bg) ; */
+}
+input#search-text{
+    background-color: var(--theme-main-bg) !important;
+    color: white !important;
+    box-shadow: rgb(65, 64, 64) 1px 2px 1rem;
 
+}
+input.search-text::placeholder{
+    color: #dee8e8e3;
+}
+form#super-search-fm > button{
+    z-index: 10;
+    box-shadow: rgba(65, 64, 64, 0.629) 1px 1px 1em;
+}
 body{
-    background-image: url(https://t.mwm.moe/fj);
+    background-image: url(https://t.mwm.moe/fj), url(http://t.mwm.moe/fj);
     background-position: center center;
     background-repeat: no-repeat;
     background-size: cover;
@@ -203,6 +218,9 @@ body{
 }
 @keyframes leavetip {
     
+}
+.s-type > span{
+    color: #fff !important;
 }
 .nothing{
     background-color: var(--theme-main-bg) !important;
