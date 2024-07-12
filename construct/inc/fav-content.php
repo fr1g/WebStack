@@ -29,7 +29,7 @@ function fav_con($mid) { ?>
         <?php   
         #single inside 2nd class
           //定义$post为全局变量，这样之后的输出就不会是同一篇文章了
-          global $post, $xtmp, $_tmpn, $_tmp, $_tmpclass, $myposts, $posts;
+          global $post, $xtmp, $_tmpn, $_tmp, $_tmpclass, $myposts, $posts, $link_url;
           //下方的posts_per_page设置最为重要
           $args = array(
             'post_type'           => 'sites',        //自定义文章类型，这里为sites
@@ -48,6 +48,7 @@ function fav_con($mid) { ?>
           // echo json_encode($args);
           $myposts = null;
           $xtmp = null;
+          $link_url = null;
           $myposts = new WP_Query( $args );
 
           if(!$myposts->have_posts()): ?>
@@ -60,7 +61,8 @@ function fav_con($mid) { ?>
             while ($myposts->have_posts()): # this is a for loop in fact
                 # here start to prepare info for cards
                 $myposts->the_post(); 
-                $link_url = get_post_meta($post->ID, '_sites_link', true); 
+
+                // echo $post->ID . 'NXX' . $link_url . 'RSSX';
                 $default_ico = get_theme_file_uri('/images/favicon.png');
                 # if visible
                   if(current_user_can('level_10') || get_post_meta($post->ID, '_visible', true)==""):

@@ -16,7 +16,10 @@ if ( ! defined( 'ABSPATH' ) ) { exit; }
 ?>
 
         <?php
+        global $title, $url;
+        $link_url = get_post_meta($post->ID, '_sites_link', true); 
             $title = $link_url;
+            echo $title;
             $is_html = '';
             $tooltip = 'data-toggle="tooltip" data-placement="bottom"';
             if(get_post_meta($post->ID, '_wechat_qr', true)){
