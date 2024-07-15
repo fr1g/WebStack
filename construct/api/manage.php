@@ -196,7 +196,7 @@ global $wpdb;
                 </td>
                 <td class="op-line">
                     <span class="<?php if($_filter != 'deny' || $_pages == 0) echo 'disabled'; ?>">
-                        <a href="<?php echo $_rqi.'forpage='.$_forPage.'&opr=0tokillall&filtering=deny';?>">删除全部拒绝项目</a>
+                        <a href="javascript:killall(`<?php echo $_rqi.'forpage='.$_forPage.'&opr=0tokillall&filtering=deny';?>`)">删除全部拒绝项目</a>
                     </span>
                 </td>
             </tr>
@@ -249,5 +249,11 @@ global $wpdb;
                 }, 1234);
             }
         });
+        function killall(operation){
+            let prepare = window.location.href.split('?')[0] + '?' + (operation.split('?')[1]);
+            let _confirm = prompt(prepare + '\n真的要删除全部吗？\n在下方输入【确认】以执行操作。');
+            while(_confirm != '确认') _confirm = prompt(prepare + '\n真的要删除全部吗？\n在下方输入【确认】以执行操作。(刚才的输入有误)');
+            if(_confirm == '确认') window.location.replace(prepare);
+        }
     </script>
 </div>
