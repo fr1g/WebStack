@@ -1,12 +1,12 @@
 <?php
-global $wpdb;
+global $wpdb, $redis;
 $redis = new Redis();
 $redis -> connect('localhost', 6379);
-$tmp = $redis -> get('ips');
-$extra_accessedIPs = isset($tmp) ? json_decode($tmp, true) : [];
-$tmp = null;
-$tmp = $redis -> get('isDbSet');
-$dbCreated = $tmp ?? isset($tmp);
+$_glbtmp = $redis -> get('ips');
+$extra_accessedIPs = isset($_glbtmp) ? json_decode($_glbtmp, true) : [];
+$_glbtmp = null;
+$_glbtmp = $redis -> get('isDbSet');
+$dbCreated = $_glbtmp ?? isset($_glbtmp);
 $_debugDataSet = [];
 $_debugDataSet['oxx'] = 'xx';
 try {
@@ -53,7 +53,7 @@ try {
 $redis -> close();
 
 $MAX_TRY = 2;
-$COOL_DOWN = 30;//0; // seconds
+$COOL_DOWN = 300;//0; // seconds
 // to debug it in small time span, modify it to 30.
 
 function dbbp ($msg){

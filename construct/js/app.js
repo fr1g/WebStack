@@ -20,14 +20,26 @@ console.error = function(...data){
 	_consoleErr(...data);
 }
 const _ua = navigator.userAgent;
+var CURR_CARD_ID = '';
+var CURR_TOUT = null;
 
 const RegisterMouseInEvent = (e) => {
 	let controling = e.target.children[2];
-	controling.click();
+	CURR_CARD_ID = controling.id;
+	CURR_TOUT = setTimeout(
+	    () => {
+	        if(CURR_CARD_ID == controling.id) controling.click();
+	        else return;
+	        return;
+	    }, 
+    1111);
+
 }
 const RegisterMouseAuEvent = (e) => {
 	let controling = e.target.children[1];
+    CURR_CARD_ID = '';
 	if(controling.getAttribute('aria-expanded') == 'true') e.target.children[2].click();
+	return;
 }
 
 let navbar = document.getElementById('top-nav');

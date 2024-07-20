@@ -14,7 +14,7 @@
 if ( ! defined( 'ABSPATH' ) ) { exit; }
 function fav_con($mid) { ?>
         <h4 class="label-text" style="display: inline-block;">
-          <i class="fa fa-send" style="margin-right: 10px;" id="term-<?php echo $mid->term_id; ?>"></i><?php echo $mid->name; ?></h4>
+          <i class="fa fa-send" style="margin-right: 10px;" id="term-<?php echo $mid->term_id; ?>"></i><?php global $___midname; $___midname = $mid->name; echo $___midname; ?></h4>
         <?php 
         $site_n           = io_get_option('site_n');
         $category_count   = $mid->category_count;

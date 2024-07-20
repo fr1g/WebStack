@@ -19,7 +19,7 @@ if ( ! defined( 'ABSPATH' ) ) { exit; }
         global $title, $url;
         $link_url = get_post_meta($post->ID, '_sites_link', true); 
             $title = $link_url;
-            echo $title;
+            // echo $title;
             $is_html = '';
             $tooltip = 'data-toggle="tooltip" data-placement="bottom"';
             if(get_post_meta($post->ID, '_wechat_qr', true)){
@@ -66,7 +66,7 @@ if ( ! defined( 'ABSPATH' ) ) { exit; }
             } 
 
             $__this_info = get_post_meta($post->ID, '_sites_sescribe', true) ?: str_replace('<br>', '', trim(preg_replace("/(\&nbsp\;|　|\xc2\xa0)/", "", get_the_excerpt($post->ID)))); 
-            $__megax = md5($__this_info . $post->ID);
+            $__megax = md5($__this_info . $post->ID . $___midname ?? 'failed');
             $__originalInfo = get_post_meta($post->ID, 'maintain', true);
             if($__originalInfo == '') $__originalInfo = 'gray:null';
             $__originalInfo = explode(':', $__originalInfo);
@@ -110,13 +110,13 @@ if ( ! defined( 'ABSPATH' ) ) { exit; }
                 </a>
                 <div <?php  if(strlen($__this_info) <= 0) echo 'style="display: none !important" '; else echo 'id="EXX' . $__megax . '" '; ?>
                 class="z-card-tooltip  collapse "     >
-                    <p <?php if(strlen($__this_info) >= 20) echo 'style="text-indent: 4ch; margin: 0;" class="require-scroll"'; ?>>
+                    <p <?php if(strlen($__this_info) >= 60) echo 'style="text-indent: 4ch; margin: 0;" class="require-scroll"'; else echo 'style="width: 100%; text-align: center;"'; ?>>
                         <?php echo (strlen($__this_info) <= 0 ? '@EMPTY@' : str_replace('\n', '<br/>', $__this_info));?>&nbsp;
                         
                     </p>
                 </div>
                 <a style="width: 0 !important; height: 0 !important; overflow: hidden !important; margin: 0 !important;" 
-                    data-toggle="collapse" href="#<?php echo 'EXX'. $__megax; ?>" 
+                    data-toggle="collapse" href="#<?php echo 'EXX'. $__megax; ?>" id="<?php echo 'IDX'. $__megax; ?>+ID"
                     aria-expanded="false" aria-controls="<?php echo 'EXX'. $__megax; ?>">
                 </a>
 

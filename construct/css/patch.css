@@ -3,9 +3,9 @@
 
 .img-circle.fix{
     object-fit: cover !important;
-    height: 40px !important;
+    height: 39px !important;
     width: 40px !important;
-    min-height: 40px !important;
+    min-height: 39px !important;
     min-width: 40px !important;
     object-position: center !important;
 }
@@ -13,7 +13,10 @@
 .collapse.in.fix{
     display: grid !important
 }
-
+.ad.ad-home{
+    margin-bottom: .9rem;
+}
+.bulletin, .bulletin-ul, .bulletin_ul{width: 100%;}
 .panel-default{
     background-color: var(--theme-main-bg) !important; 
     border-radius: .26rem;
@@ -138,16 +141,19 @@ body{
 }
 .z-card-tooltip>p.require-scroll{
     overflow-y: scroll !important;
+    scrollbar-color: whitesmoke transparent !important;
 }
 .z-card-container{
     position: relative;
-    /* border: #2c2e2f 3px solid; */
-    /* margin-top: var(--move-bit-upward); */
     width: 100%;
 }
 .z-card-container>a{
     box-shadow: rgb(65, 64, 64) 1px 2px 1rem; /* 3px; */
     border-radius: .26rem !important;
+}
+.logo-expanded>img{
+    max-width: 190.5px;
+    max-height: 50.5px;
 }
 .z-tooltip{
     /* display: block !important; */
@@ -379,4 +385,9 @@ footer{
 }
 footer>a{
     text-decoration: underline !important;
+}
+.col-12.mx-auto>div.panel.panel-default{
+    padding: 1.2rem !important;
+    margin-bottom: 7.5rem !important;
+    box-shadow: rgb(65, 64, 64) 1px 2px 1rem;  
 }
