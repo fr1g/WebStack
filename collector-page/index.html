@@ -109,6 +109,9 @@
             animation: pulse 1s cubic-bezier(0.4, 0, 0.6, 1) infinite;
             /* font-weight: bold; */
         }
+        .iblock{
+            display: inline-block;
+        }
         
     </style>
 </head>
@@ -154,7 +157,7 @@
                     <p class="md:text-lg" style="text-align: left !important; text-indent: 0 !important; transform: translateX(12px) translateY(3px);min-width: max-content !important; font-size: smaller; opacity: .6 !important;">若无法加载，请检查链接。</p>
                 </div>
                 <div style="width: 100%; text-align: right;">
-                    <button style="margin-left: auto; margin-right: 0;" type="submit" class="mt-1 m-1 p-2 block border border-slate-500 bg-slate-600 rounded-lg transition bg-opacity-100 hover:bg-opacity-60 hover:shadow-lg ">
+                    <button style="margin-left: auto; margin-right: 0;" type="submit" class="mt-1 m-1 p-2 iblock border border-slate-500 bg-slate-600 rounded-lg transition bg-opacity-100 hover:bg-opacity-60 hover:shadow-lg ">
                         <span style="margin-left: 3px; margin-right: 3px;">提交</span>
                     </button>
                 </div>
@@ -173,7 +176,7 @@
         options = document.getElementById('select'),
         optionTemplate = `<option value="" >@NNXN@</option>`,
         endpoint = (window.location.href.includes('#debug') ? 
-        'http://localhost/wpdev/' : 'http://localhost/wpdev/'), // require edit    
+        'http://localhost/wpdev/' : 'https://mcres.cn'), // require edit    
         submitBtn = document.getElementsByTagName('button')[0]
         
         ;
@@ -193,9 +196,12 @@
                 console.log(xhr);
             }
             try {
-                let respData = JSON.parse(xhr.responseText);
-                console.log(respData);
-                console.log(xhr.responseText);
+                let rx = xhr.responseText;
+                if(rx.includes(`<br />`)) {
+                    let astmp = rx.split('<br />');
+                    rx = astmp[astmp.length - 1];
+                }
+                let respData = JSON.parse(rx);
                 if(!respData.status){
                     ErrorSubmit('max tries');
                     return;
@@ -237,11 +243,20 @@
         xhr.open('get', `${endpoint}/wp-json/apis/get-classes`);
         xhr.onreadystatechange = () => {
             if(xhr.readyState != 4) return;
-            res = JSON.parse(xhr.responseText);
+            try{
+                let rx = xhr.responseText;
+                if(rx.includes(`<br />`)) {
+                    let astmp = rx.split('<br />');
+                    rx = astmp[astmp.length - 1];
+                }
+                res = JSON.parse(rx);
                 console.log(res);
-            setTimeout(() => {
-                RunGotProcedure();
-            }, 1000);
+                setTimeout(() => {
+                    RunGotProcedure();
+                }, 1000);
+            }catch(ex){
+                console.error(ex);       
+            }
         }
         xhr.send();
     }
